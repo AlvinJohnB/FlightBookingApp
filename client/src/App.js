@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Flight from "./Flight";
 import BookingCheckout from "./pages/BookingCheckout";
-
+import Flights from "./pages/Flights";
 import Layout from "./pages/Layout";
 import ManageFlights from "./pages/admin/ManageFlights";
 import ManageAirports from "./pages/admin/ManageAirports";
@@ -104,6 +104,18 @@ function App() {
             element={
               <Layout>
                 <VerifyPayment heading="Payment Status" description="" />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/flights"
+            element={
+              <Layout>
+                <Flights
+                  heading="Available Flights"
+                  description="Browse and book your flights."
+                />
               </Layout>
             }
           />

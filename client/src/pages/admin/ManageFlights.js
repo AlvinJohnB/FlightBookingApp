@@ -20,6 +20,10 @@ export default function ManageFlights() {
 
   const [flights, setFlights] = useState([]);
 
+  // Filter states
+  const [filterDestination, setFilterDestination] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+
   const fetchAirports = async () => {
     try {
       const response = await fetch(
@@ -217,6 +221,19 @@ export default function ManageFlights() {
   if (user && user.isAdmin === false) {
     return <Navigate to="/" />;
   }
+
+  // Filtered flights
+  const filteredFlights = flights.filter((flight) => {
+    let matchesDestination = true;
+    let matchesDate = true;
+    if (filterDestination) {
+      matchesDestination = flight.destination._id === filterDestination;
+    }
+    if (filterDate) {
+      matchesDate = flight.departureDate === filterDate;
+    }
+    return matchesDestination && matchesDate;
+  });
 
   return (
     <div>
@@ -492,42 +509,90 @@ export default function ManageFlights() {
 
       <div className="col-10 py-5 mx-auto">
         <h1>Flights</h1>
+        {/* Filter Controls */}
+        <div className="row mb-4 mx-auto align-items-center">
+          <div className="row d-flex mx-auto col-md-12">
+            <div className="col-md-4 mb-2">
+              <label className="form-label fw-semibold">
+                Filter by Destination
+              </label>
+              <select
+                className="form-select"
+                value={filterDestination}
+                onChange={(e) => setFilterDestination(e.target.value)}
+              >
+                <option value="">All Destinations</option>
+                {airports.map((airport) => (
+                  <option key={airport._id} value={airport._id}>
+                    {airport.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 mb-2">
+              <label className="form-label fw-semibold">Filter by Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={filterDate}
+                onChange={(e) => setFilterDate(e.target.value)}
+              />
+            </div>
+            <div className="col-md-4 mt-3 mb-2">
+              <button
+                className="btn btn-warning mt-3"
+                onClick={() => {
+                  setFilterDestination("");
+                  setFilterDate("");
+                }}
+              >
+                Reset Filters
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="row">
-          {flights.map((flight) => (
-            <div key={flight._id} className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h5 className="card-title">{flight.flightNumber}</h5>
-                  <p className="card-text">
-                    <strong>Origin:</strong> {flight.origin.name} -{" "}
-                    {flight.origin.code}
-                    <br />
-                    <strong>Destination:</strong> {flight.destination.name} -{" "}
-                    {flight.destination.code}
-                    <br />
-                    <strong>Departure:</strong> {flight.departureDate}{" "}
-                    {flight.departureTime}
-                    <br />
-                    <strong>Price:</strong> PHP {flight.price}
-                  </p>
-                  <button
-                    className="btn btn-warning me-2"
-                    onClick={() => setSelectedFlight(flight)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={async () => {
-                      handleDeleteFlight(flight._id);
-                    }}
-                  >
-                    Delete
-                  </button>
+          {filteredFlights.length === 0 ? (
+            <div className="col-12 text-center text-muted">
+              No flights found.
+            </div>
+          ) : (
+            filteredFlights.map((flight) => (
+              <div key={flight._id} className="col-md-4 mb-4">
+                <div className="card h-100">
+                  <div className="card-body">
+                    <h5 className="card-title">{flight.flightNumber}</h5>
+                    <p className="card-text">
+                      <strong>Origin:</strong> {flight.origin.name} -{" "}
+                      {flight.origin.code}
+                      <br />
+                      <strong>Destination:</strong> {flight.destination.name} -{" "}
+                      {flight.destination.code}
+                      <br />
+                      <strong>Departure:</strong> {flight.departureDate}{" "}
+                      {flight.departureTime}
+                      <br />
+                      <strong>Price:</strong> PHP {flight.price}
+                    </p>
+                    <button
+                      className="btn btn-warning me-2"
+                      onClick={() => setSelectedFlight(flight)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={async () => {
+                        handleDeleteFlight(flight._id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

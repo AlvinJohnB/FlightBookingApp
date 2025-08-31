@@ -118,7 +118,7 @@
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url(../public/images/El_Nido.jpeg) center/cover no-repeat;
   color: white;
-  height: 25vh;
+  height: 30vh;
 }
 
 .bg-slate {
