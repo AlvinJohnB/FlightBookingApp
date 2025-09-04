@@ -4,6 +4,7 @@ const { verify } = require("../middlewares/authMiddleware");
 const bookingController = require("../controllers/bookingController");
 
 router.patch("/", verify, bookingController.createBooking);
+router.patch("/updateBooking/:id", verify, bookingController.updateBooking);
 router.get("/myBookings", verify, bookingController.getUserBookings);
 router.get("/:id", verify, bookingController.getBookingById);
 

@@ -41,6 +41,28 @@ module.exports.createBooking = async (req, res, next) => {
   }
 };
 
+module.exports.updateBooking = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const { id: bookingId } = req.params;
+    const { quantity, totalPrice } = req.body;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const booking = user.bookings.id(bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+    if (quantity) booking.quantity = quantity;
+    if (totalPrice) booking.totalPrice = totalPrice;
+    await user.save();
+    res.status(200).json({ message: "Booking updated successfully", booking });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.getBookingById = async (req, res, next) => {
   try {
     const { id } = req.user;
@@ -281,7 +303,7 @@ module.exports.verifyPaymentStatus = async (req, res, next) => {
       return res.status(404).json({ message: "Payment intent not found" });
     }
 
-    booking.paymentInformation.paymentStatus = paymentIntent.status;
+    booking.paymentInformation.paymentStatus = paymentIntent.attributes.status;
 
     await user.save();
 

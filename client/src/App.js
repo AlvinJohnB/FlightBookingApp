@@ -15,6 +15,8 @@ import ManageAirports from "./pages/admin/ManageAirports";
 import Payment from "./pages/Payment";
 import VerifyPayment from "./pages/VerifyPayment";
 import MyBookings from "./pages/MyBookings";
+import BookingDetails from "./pages/BookingDetails";
+import UpdateFlight from "./pages/UpdateFlight";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -121,6 +123,18 @@ function App() {
           />
 
           <Route
+            path="/update-flight/:id/:bookingId"
+            element={
+              <Layout>
+                <UpdateFlight
+                  heading="Cart"
+                  description="Review your selected flights."
+                />
+              </Layout>
+            }
+          />
+
+          <Route
             path="/my-bookings"
             element={
               <Layout>
@@ -139,6 +153,18 @@ function App() {
                 <BookingCheckout
                   heading="Secure Checkout"
                   description="Complete your booking in just a few steps."
+                />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/booking-details/:id"
+            element={
+              <Layout>
+                <BookingDetails
+                  heading="Booking Details"
+                  description="View your booking information here."
                 />
               </Layout>
             }

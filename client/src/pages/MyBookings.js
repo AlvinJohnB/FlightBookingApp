@@ -44,6 +44,10 @@ export default function MyBookings() {
     }
   };
 
+  const handleAction = (booking) => {
+    navigate(`/bookings/${booking._id}`);
+  };
+
   return (
     <Container className="my-5">
       {bookings.length === 0 ? (
@@ -149,16 +153,27 @@ export default function MyBookings() {
                   </div>
                 </Card.Body>
                 <Card.Footer className="bg-white border-0 pt-0 pb-3 px-4">
-                  <Button
-                    variant="outline-primary"
-                    className="w-100 d-flex align-items-center justify-content-center"
-                    onClick={() =>
-                      navigate(`/flight-details/${booking.flightId._id}`)
-                    }
-                  >
-                    <i className="bi bi-info-circle me-2"></i>
-                    <span>View Details</span>
-                  </Button>
+                  {booking.paymentInformation?.paymentStatus === "succeeded" ? (
+                    <Button
+                      variant="outline-primary"
+                      className="w-100 d-flex align-items-center justify-content-center"
+                      onClick={() =>
+                        navigate(`/booking-details/${booking._id}`)
+                      }
+                    >
+                      <i className="bi bi-info-circle me-2"></i>
+                      <span>View Details</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline-danger"
+                      className="w-100 d-flex align-items-center justify-content-center"
+                      onClick={() => handleAction(booking)}
+                    >
+                      <i className="bi bi-info-circle me-2"></i>
+                      <span>Action Needed</span>
+                    </Button>
+                  )}
                 </Card.Footer>
               </Card>
             </Col>

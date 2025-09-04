@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-export default function BookingCheckout() {
+export default function BookingDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [passengerCount, setPassengerCount] = useState(0);
@@ -32,20 +32,21 @@ export default function BookingCheckout() {
           setBooking(data.booking);
 
           // Initialize passenger data array with empty objects
-          setPassengers(
-            Array(count)
-              .fill()
-              .map(() => ({
-                firstName: "",
-                lastName: "",
-                email: "",
-                phone: "",
-                address: "",
-                city: "",
-                province: "",
-                zipCode: "",
-              }))
-          );
+          //   setPassengers(
+          //     Array(count)
+          //       .fill()
+          //       .map(() => ({
+          //         firstName: "",
+          //         lastName: "",
+          //         email: "",
+          //         phone: "",
+          //         address: "",
+          //         city: "",
+          //         province: "",
+          //         zipCode: "",
+          //       }))
+          //   );
+          setPassengers(data.booking.travellers || []);
         } else {
           const error = await response.json();
           console.error("Error fetching booking info:", error);
@@ -130,7 +131,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "firstName", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
                   <div className="col-12 col-md-6">
@@ -145,7 +146,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "lastName", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
                 </div>
@@ -163,7 +164,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "email", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
                   <div className="col-12 col-md-6 text-start">
@@ -178,7 +179,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "phone", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
                 </div>
@@ -193,7 +194,7 @@ export default function BookingCheckout() {
                     onChange={(e) =>
                       handleInputChange(index, "address", e.target.value)
                     }
-                    required
+                    readOnly
                   />
                 </div>
 
@@ -208,7 +209,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "city", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
 
@@ -224,7 +225,7 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "province", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
 
@@ -240,10 +241,13 @@ export default function BookingCheckout() {
                       onChange={(e) =>
                         handleInputChange(index, "zipCode", e.target.value)
                       }
-                      required
+                      readOnly
                     />
                   </div>
                 </div>
+                <span className="text-muted mt-2 text-center mx-auto">
+                  Please call our support team if there are details to update.
+                </span>
               </div>
             </div>
           </div>
@@ -287,20 +291,12 @@ export default function BookingCheckout() {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-theme w-100 mt-4">
-                <i className="bi bi-lock me-2"></i>Proceed to Payment
-              </button>
-
               <button
-                type="button"
-                onClick={() =>
-                  navigate(
-                    `/update-flight/${booking?.flightId?._id}/${booking._id}`
-                  )
-                }
-                className="btn btn-warning w-100 mt-2"
+                type="submit"
+                disabled
+                className="btn btn-theme w-100 mt-4"
               >
-                <i className="bi bi-arrow-left me-2"></i>Back to Booking
+                <i className="bi bi-lock me-2"></i>Booking Paid
               </button>
 
               <div className="text-center">

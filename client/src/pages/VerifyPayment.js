@@ -47,7 +47,7 @@ export default function VerifyPayment() {
           <p className="lead">Your payment has been processed and verified.</p>
           <div className="d-flex gap-3 mt-4">
             <button
-              onClick={() => navigate(`/payment/${id}`)}
+              onClick={() => navigate(`/my-bookings`)}
               className="btn btn-theme btn-lg"
             >
               Manage Booking
